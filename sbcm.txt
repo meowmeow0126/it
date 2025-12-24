@@ -1,3 +1,5 @@
+<target_ip> = Metasploitable Ip
+
 WINDOWS 
 username : udit
 password : qwerty
@@ -9,6 +11,7 @@ username : msfadmin
 password : msfadmin
 
 #Practical 2
+Aim: Footprinting and Recon
 
 a. Perform Footprinting through Search Engines
 “google search operators” site:google.com
@@ -97,6 +100,8 @@ m. Footprinting a target using OSINT Framework
 https://osintframework.com/
 
 #Practical 3
+AIm: Network Scanning
+
 a. UDP and TCP Packet Crafting Techniques using hping3
 
 TCP SYN scan
@@ -176,6 +181,8 @@ SCTP COOKIE ECHO scan
 nmap -sZ <target_ip>
 
 #Practical 4
+Aim: Enumeration
+
 a. Enumeration using Nmap 
 
 ls /usr/share/nmap/scripts | grep dns
@@ -262,6 +269,7 @@ searchsploit afd windows local
 searchsploit Linux reverse password
 
 #Practical 6
+AIm: system hacking
 
 sudo su
 responder -I etho
@@ -575,3 +583,4 @@ Open the cryptool and enter the secret message to encrypt it, then click on encr
 Click encrypt it will give the encrypted text 
  
 Now decrypt select the encrypted text window and select decrypt then give the key and click decrypt 
+
