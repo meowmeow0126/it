@@ -530,11 +530,11 @@ Open the vulnerability:File Inclusion page
 in url *****page=../../../../../../etc/passwd” for traversal and getting the password files of the system
 
 from side panel choose Upload 
-create text file -> while saving select all files and save as example.php 
+create text file -> nano example.php 
 
 CSRF Attack 
 from side pane select CSRF 
-Navigate to change password page and change the password and copy the url 
+Navigate to change password page and change the password and copy the url in new tab or browser
 
 Command Injection 
 from side pane select Command Execution
@@ -579,8 +579,7 @@ Now decoding, enter the coded text in decode text box and click on decode button
 E . Perform Encryption and Decryption using Cryptool 
 
 Open the cryptool and enter the secret message to encrypt it, then click on encrypt/Decrypt select the encryption algo  
-
 Click encrypt it will give the encrypted text 
- 
 Now decrypt select the encrypted text window and select decrypt then give the key and click decrypt 
+
 
