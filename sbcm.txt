@@ -504,6 +504,17 @@ In Kali Terminal
 sudo apt install dvwa
 dvwa-start
 
+OR 
+
+start metasploitable 
+msfadmin
+msfadmin
+ip a
+IN KALI browser 
+http://<METASPLOITABLE_IP>/dvwa/login.php
+admin
+password
+
 a. Perform a Brute-force Attack using Burp Suite 
 in dvwa side panel select Brute Force
 
@@ -581,6 +592,7 @@ E . Perform Encryption and Decryption using Cryptool
 Open the cryptool and enter the secret message to encrypt it, then click on encrypt/Decrypt select the encryption algo  
 Click encrypt it will give the encrypted text 
 Now decrypt select the encrypted text window and select decrypt then give the key and click decrypt 
+
 
 
 
