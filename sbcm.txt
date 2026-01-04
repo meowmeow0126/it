@@ -500,12 +500,12 @@ file://home/kali/Documents/udit/index.html
 #Practical 12
 Aim: Hacking Web Apps
 
-a. Perform a Brute-force Attack using Burp Suite 
-in dvwa side panel select Brute Force
-
 In Kali Terminal 
 sudo apt install dvwa
 dvwa-start
+
+a. Perform a Brute-force Attack using Burp Suite 
+in dvwa side panel select Brute Force
 
 Start Burp Suite and capture request that request in which we get username=test&password=test&Login=Login
 
@@ -547,7 +547,7 @@ Extract Databases using SQLMap
 
 in dvwa select SQL injection and anter 1 and Submit and capture the request from burpsuite url which has /dvwa/vulnerabilities/sqli/id=1&Submit=Submit
 
-Now right click the request, and select copy to file option to save the request in file name "dbs" 
+Now right click the request, and select copy to file option to save the request in file name "sql" 
 and in kali type  
 sqlmap –r sql --dbs 
 sqlmap –r sql –D dvwa --tables
@@ -581,5 +581,6 @@ E . Perform Encryption and Decryption using Cryptool
 Open the cryptool and enter the secret message to encrypt it, then click on encrypt/Decrypt select the encryption algo  
 Click encrypt it will give the encrypted text 
 Now decrypt select the encrypted text window and select decrypt then give the key and click decrypt 
+
 
 
